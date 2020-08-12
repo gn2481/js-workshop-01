@@ -7,6 +7,13 @@ window.addEventListener('DOMContentLoaded', function () {
     const task = document.createElement('li')
     task.textContent = document.querySelector('#input').value
     task.setAttribute('draggable', 'true')
+    // 綁定拖拉事件
+    task.addEventListener('drag', function (event) {
+      const current_elm = document.elementFromPoint(event.clientX, event.clientY)
+      if (current_elm.parentNode.tagName == "UL") {
+        current_elm.insertAdjacentElement('beforebegin', task)
+      }
+    })
 
     const closeBtn = document.createElement('span')
     closeBtn.textContent = "x"
@@ -33,21 +40,17 @@ window.addEventListener('DOMContentLoaded', function () {
 
   document.querySelectorAll('li').forEach(function (draggedList) {
     draggedList.addEventListener('drag', function (event) {
-      // console.log(event.screenX)
-      // console.log(event.clientX)
-
       const current_elm = document.elementFromPoint(event.clientX, event.clientY)
       
       const last_elm = document.querySelector('ul li:last-child')
 
-
       if (current_elm.parentNode.tagName == "UL") {
-        current_elm.insertAdjacentElement('beforebegin', draggedList)
+        if (current_elm == current_elm.nextElementSibling) {
+          current_elm.insertAdjacentElement('beforebegin', draggedList)
+        }else{
+          current_elm.insertAdjacentElement('afterend', draggedList)
+        }
       }
-
-
-
-
       // 將滑鼠移到的地方，與draggedList換
 
     })
